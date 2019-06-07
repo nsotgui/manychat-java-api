@@ -32,6 +32,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
@@ -51,16 +52,30 @@ public class PageAPITest {
     @Test
     public void getCustomFields() throws URISyntaxException {
         Resource resource = new InputStreamResource(this.getClass().getResourceAsStream("/manychat-api-responses/get_custom_fields.json"));
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_CUSTOM_FIELDS;
+
         mockServer.expect(ExpectedCount.once(),
-                requestTo(new URI("https://api.manychat.com/fb/page/getCustomFields")))
+                requestTo(new URI(endpoint)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(resource)
                 );
 
-        List<CustomField> customFieldList = manyChatAPIClient.getCustomFields();
-        // TODO: add assert
+        List<CustomField> customFields = manyChatAPIClient.getCustomFields();
+        assertEquals(3, customFields.size());
+        assertEquals(42, customFields.get(0).getId().intValue());
+        assertEquals("ANSWER_TO_LIFE", customFields.get(0).getName());
+        assertEquals("text", customFields.get(0).getType());
+        assertEquals("description", customFields.get(0).getDescription());
+        assertEquals(7, customFields.get(1).getId().intValue());
+        assertEquals("RANDOM_NUMBER", customFields.get(1).getName());
+        assertEquals("number", customFields.get(1).getType());
+        assertEquals("", customFields.get(1).getDescription());
+        assertEquals(123, customFields.get(2).getId().intValue());
+        assertEquals("RANDOM_BOOLEAN", customFields.get(2).getName());
+        assertEquals("boolean", customFields.get(2).getType());
+        assertEquals("", customFields.get(2).getDescription());
         mockServer.verify();
     }
 }
