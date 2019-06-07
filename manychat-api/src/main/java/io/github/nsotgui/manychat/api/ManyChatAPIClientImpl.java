@@ -17,18 +17,21 @@
 package io.github.nsotgui.manychat.api;
 
 import io.github.nsotgui.manychat.CustomField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Internal implementation of the ManyChat api client
  */
 final class ManyChatAPIClientImpl implements ManyChatAPIClient {
+    private Logger LOG = LoggerFactory.getLogger(ManyChatAPIClientImpl.class);
     private HttpEntity<String> entity;
     private RestTemplate restTemplate;
 
@@ -44,11 +47,35 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
 
     public List<CustomField> getCustomFields() throws RestClientException {
         String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_CUSTOM_FIELDS;
+        LOG.info("Retrieving Custom Fields: {}", endpoint);
         ResponseEntity<CustomFieldsResponse> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity, CustomFieldsResponse.class);
+        LOG.debug("Received response: {}", httpResponse.toString());
+
+        processResponse(httpResponse);
+
         CustomFieldsResponse customFieldsResponse = httpResponse.getBody();
-        // TODO: better error handling
-        assert customFieldsResponse != null;
-        List<CustomField> customFields = customFieldsResponse.getCustomFields();
-        return customFields != null ? customFields : Collections.emptyList();
+        List<CustomField> customFields = new ArrayList<>();
+        if (customFieldsResponse != null && customFieldsResponse.getCustomFields() != null)
+            customFields = customFieldsResponse.getCustomFields();
+        return customFields;
+    }
+
+    private void processResponse(ResponseEntity<? extends BaseResponse> httpResponse) {
+        LOG.debug("Received response: {}", httpResponse.toString());
+
+        BaseResponse response = httpResponse.getBody();
+
+        // We don't check the status code here since if there is an error the spring framework will throw a RestClientException
+        if (response == null) {
+            String errorMessage = "Request body is null";
+            LOG.error(errorMessage);
+            throw new RestClientException(errorMessage);
+        }
+
+        // Check ManyChat API error
+        if (response.getStatus().equalsIgnoreCase("error")) {
+            LOG.error(response.getMessage());
+            throw new RestClientException(response.getMessage());
+        }
     }
 }
