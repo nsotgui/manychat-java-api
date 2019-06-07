@@ -18,9 +18,11 @@ package io.github.nsotgui.manychat.api;
 
 import io.github.nsotgui.manychat.CustomField;
 import org.springframework.http.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,9 +42,13 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
         entity = new HttpEntity<String>("parameters", headers);
     }
 
-    public List<CustomField> getCustomFields() {
+    public List<CustomField> getCustomFields() throws RestClientException {
         String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_CUSTOM_FIELDS;
-        ResponseEntity<CustomFieldsResponse> customFieldsResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity, CustomFieldsResponse.class);
-        return customFieldsResponse.getBody().getCustomFields();
+        ResponseEntity<CustomFieldsResponse> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity, CustomFieldsResponse.class);
+        CustomFieldsResponse customFieldsResponse = httpResponse.getBody();
+        // TODO: better error handling
+        assert customFieldsResponse != null;
+        List<CustomField> customFields = customFieldsResponse.getCustomFields();
+        return customFields != null ? customFields : Collections.emptyList();
     }
 }
