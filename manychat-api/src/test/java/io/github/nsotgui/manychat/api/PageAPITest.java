@@ -17,6 +17,7 @@
 package io.github.nsotgui.manychat.api;
 
 import io.github.nsotgui.manychat.CustomField;
+import io.github.nsotgui.manychat.Tag;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.InputStreamResource;
@@ -76,6 +77,29 @@ public class PageAPITest {
         assertEquals("RANDOM_BOOLEAN", customFields.get(2).getName());
         assertEquals("boolean", customFields.get(2).getType());
         assertEquals("", customFields.get(2).getDescription());
+        mockServer.verify();
+    }
+
+    @Test
+    public void getTags() throws URISyntaxException {
+        Resource resource = new InputStreamResource(this.getClass().getResourceAsStream("/manychat-api-responses/get_tags.json"));
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_TAGS;
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(endpoint)))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(resource)
+                );
+
+        List<Tag> tags = manyChatAPIClient.getTags();
+
+        assertEquals(2, tags.size());
+        assertEquals(1, tags.get(0).getId().intValue());
+        assertEquals("has_done_this", tags.get(0).getName());
+        assertEquals(2, tags.get(1).getId().intValue());
+        assertEquals("has_done_that", tags.get(1).getName());
         mockServer.verify();
     }
 }

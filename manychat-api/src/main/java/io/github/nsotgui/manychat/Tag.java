@@ -14,31 +14,47 @@
  * limitations under the License.
  */
 
-package io.github.nsotgui.manychat.api;
+package io.github.nsotgui.manychat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.nsotgui.manychat.CustomField;
-
-import java.util.ArrayList;
 
 /**
- * The CustomField request response
+ * Represents a tag
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-class CustomFieldsResponse extends BaseResponse {
-    private ArrayList<CustomField> customFields;
+public class Tag {
+    private Integer id;
+    private String name;
 
-    public CustomFieldsResponse() {
+    public Tag() {
     }
 
-    @JsonProperty("data")
-    public ArrayList<CustomField> getCustomFields() {
-        return customFields;
+    public Tag(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public void setCustomFields(ArrayList<CustomField> customFields) {
-        this.customFields = customFields;
+    public Integer getId() {
+        return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

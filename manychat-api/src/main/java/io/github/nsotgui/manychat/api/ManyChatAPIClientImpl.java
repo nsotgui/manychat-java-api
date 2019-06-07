@@ -17,8 +17,10 @@
 package io.github.nsotgui.manychat.api;
 
 import io.github.nsotgui.manychat.CustomField;
+import io.github.nsotgui.manychat.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -48,22 +50,42 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
     public List<CustomField> getCustomFields() throws RestClientException {
         String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_CUSTOM_FIELDS;
         LOG.info("Retrieving Custom Fields: {}", endpoint);
-        ResponseEntity<CustomFieldsResponse> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity, CustomFieldsResponse.class);
+        ResponseEntity<APIResponse<CustomField>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity,
+                new ParameterizedTypeReference<APIResponse<CustomField>>() {
+                });
         LOG.debug("Received response: {}", httpResponse.toString());
 
         processResponse(httpResponse);
 
-        CustomFieldsResponse customFieldsResponse = httpResponse.getBody();
+        APIResponse<CustomField> apiResponse = httpResponse.getBody();
         List<CustomField> customFields = new ArrayList<>();
-        if (customFieldsResponse != null && customFieldsResponse.getCustomFields() != null)
-            customFields = customFieldsResponse.getCustomFields();
+        if (apiResponse != null && apiResponse.getData() != null)
+            customFields = apiResponse.getData();
         return customFields;
     }
 
-    private void processResponse(ResponseEntity<? extends BaseResponse> httpResponse) {
+    @Override
+    public List<Tag> getTags() throws RestClientException {
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_TAGS;
+        LOG.info("Retrieving Tags: {}", endpoint);
+        ResponseEntity<APIResponse<Tag>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity,
+                new ParameterizedTypeReference<APIResponse<Tag>>() {
+                });
         LOG.debug("Received response: {}", httpResponse.toString());
 
-        BaseResponse response = httpResponse.getBody();
+        processResponse(httpResponse);
+
+        APIResponse<Tag> apiResponse = httpResponse.getBody();
+        List<Tag> tags = new ArrayList<>();
+        if (apiResponse != null && apiResponse.getData() != null)
+            tags = apiResponse.getData();
+        return tags;
+    }
+
+    private void processResponse(ResponseEntity<? extends APIResponse> httpResponse) {
+        LOG.debug("Received response: {}", httpResponse.toString());
+
+        APIResponse response = httpResponse.getBody();
 
         // We don't check the status code here since if there is an error the spring framework will throw a RestClientException
         if (response == null) {

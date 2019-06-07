@@ -16,14 +16,20 @@
 
 package io.github.nsotgui.manychat.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.List;
+
 /**
  * Base request response
  */
-abstract class BaseResponse {
+@JsonIgnoreProperties(ignoreUnknown = true)
+class APIResponse<T> {
     private String status;
     private String message;
+    private List<T> data;
 
-    public BaseResponse() {
+    public APIResponse() {
     }
 
     public String getStatus() {
@@ -40,5 +46,13 @@ abstract class BaseResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public List<T> getData() {
+        return data;
+    }
+
+    public void setData(List<T> data) {
+        this.data = data;
     }
 }

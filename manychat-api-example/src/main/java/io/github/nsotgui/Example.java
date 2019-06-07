@@ -17,6 +17,7 @@
 package io.github.nsotgui;
 
 import io.github.nsotgui.manychat.CustomField;
+import io.github.nsotgui.manychat.Tag;
 import io.github.nsotgui.manychat.api.ManyChatAPIClient;
 import io.github.nsotgui.manychat.api.ManyChatAPIFactory;
 import org.apache.commons.cli.*;
@@ -40,6 +41,11 @@ public class Example {
         List<CustomField> customFields = manyChatAPIClient.getCustomFields();
         for (CustomField field : customFields)
             System.out.println("Field: " + field);
+
+        // Gets the tags
+        List<Tag> tags = manyChatAPIClient.getTags();
+        for (Tag tag : tags)
+            System.out.println("Tag: " + tag);
     }
 
     /**
