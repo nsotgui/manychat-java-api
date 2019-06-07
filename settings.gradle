@@ -1,7 +1,5 @@
 rootProject.name = 'manychat-java-api'
 
-include ':manychat-api'
-include ':manychat-api-example'
 include 'manychat-api'
 include 'manychat-api-example'
 

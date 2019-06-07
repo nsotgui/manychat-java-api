@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.nsotgui.manychat.api;
+package io.github.nsotgui.manychat.api;
 
 /**
  * The factory to get the ManyChat api client

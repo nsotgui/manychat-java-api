@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.nsotgui.manychat.api;
+package io.github.nsotgui.manychat.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nsotgui.manychat.CustomField;
+import io.github.nsotgui.manychat.CustomField;
 
 import java.util.ArrayList;
 

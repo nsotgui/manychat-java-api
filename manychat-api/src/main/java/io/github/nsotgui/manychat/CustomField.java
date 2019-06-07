@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.nsotgui.manychat;
+package io.github.nsotgui.manychat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

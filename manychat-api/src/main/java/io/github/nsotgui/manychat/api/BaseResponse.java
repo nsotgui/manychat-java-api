@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.nsotgui.manychat.api;
+package io.github.nsotgui.manychat.api;
 
 /**
  * Base request response

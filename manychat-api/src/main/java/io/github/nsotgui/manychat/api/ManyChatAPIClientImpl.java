@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.nsotgui.manychat.api;
+package io.github.nsotgui.manychat.api;
 
-import com.nsotgui.manychat.CustomField;
+import io.github.nsotgui.manychat.CustomField;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
