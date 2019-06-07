@@ -1,0 +1,23 @@
+{
+  "status": "success",
+  "data": [
+    {
+      "id": 42,
+      "name": "ANSWER_TO_LIFE",
+      "type": "text",
+      "description": ""
+    },
+    {
+      "id": 7,
+      "name": "RANDOM_NUMBER",
+      "type": "number",
+      "description": ""
+    },
+    {
+      "id": 123,
+      "name": "RANDOM_BOOLEAN",
+      "type": "boolean",
+      "description": ""
+    }
+  ]
+}

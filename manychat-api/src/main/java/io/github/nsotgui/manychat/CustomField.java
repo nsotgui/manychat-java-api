@@ -28,6 +28,16 @@ public class CustomField {
     private String type;
     private String description;
 
+    public CustomField() {
+    }
+
+    public CustomField(Integer id, String name, String type, String description) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.description = description;
+    }
+
     public Integer getId() {
         return id;
     }

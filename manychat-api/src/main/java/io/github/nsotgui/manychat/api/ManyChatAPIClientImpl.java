@@ -28,8 +28,10 @@ import java.util.List;
  */
 final class ManyChatAPIClientImpl implements ManyChatAPIClient {
     private HttpEntity<String> entity;
+    private RestTemplate restTemplate;
 
-    public ManyChatAPIClientImpl(String apiToken) {
+    public ManyChatAPIClientImpl(RestTemplate restTemplate, String apiToken) {
+        this.restTemplate = restTemplate;
         HttpHeaders headers = new HttpHeaders();
 
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -39,7 +41,6 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
     }
 
     public List<CustomField> getCustomFields() {
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<CustomFieldsResponse> customFieldsResponse = restTemplate.exchange("https://api.manychat.com/fb/page/getCustomFields", HttpMethod.GET, entity, CustomFieldsResponse.class);
         return customFieldsResponse.getBody().getCustomFields();
     }

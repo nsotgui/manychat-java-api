@@ -15,6 +15,8 @@
  */
 package io.github.nsotgui.manychat.api;
 
+import org.springframework.web.client.RestTemplate;
+
 /**
  * The factory to get the ManyChat api client
  */
@@ -27,7 +29,7 @@ public final class ManyChatAPIFactory {
      * @return the ManyChat client
      */
     public static ManyChatAPIClient getManyChatAPIClient(String apiToken) {
-        return new ManyChatAPIClientImpl(apiToken);
+        return new ManyChatAPIClientImpl(new RestTemplate(), apiToken);
     }
 
 }
