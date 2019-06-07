@@ -28,11 +28,13 @@ import java.util.List;
 public interface ManyChatAPIClient {
 
     /**
-     * Gets the list of custom fields
+     * Creates a tag
      *
-     * @return the custom fields
+     * @param tag the tag to create
+     * @return the tag created
+     * @throws RestClientException
      */
-    List<CustomField> getCustomFields() throws RestClientException;
+    Tag createTag(Tag tag) throws RestClientException;
 
     /**
      * Gets the list of tags
@@ -40,4 +42,12 @@ public interface ManyChatAPIClient {
      * @return the tags
      */
     List<Tag> getTags() throws RestClientException;
+
+    /**
+     * Gets the list of custom fields
+     *
+     * @return the custom fields
+     */
+    List<CustomField> getCustomFields() throws RestClientException;
+
 }

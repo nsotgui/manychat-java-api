@@ -102,4 +102,26 @@ public class PageAPITest {
         assertEquals("has_done_that", tags.get(1).getName());
         mockServer.verify();
     }
+
+    @Test
+    public void createTag() throws URISyntaxException {
+        Resource resource = new InputStreamResource(this.getClass().getResourceAsStream("/manychat-api-responses/create_tag.json"));
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_CREATE_TAG;
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(endpoint)))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(resource)
+                );
+
+        Tag tag = new Tag();
+        tag.setName("My new tag");
+        Tag createdTag = manyChatAPIClient.createTag(tag);
+
+        assertEquals(tag.getName(), createdTag.getName());
+        assertEquals(1502, createdTag.getId().intValue());
+        mockServer.verify();
+    }
 }

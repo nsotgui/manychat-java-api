@@ -1,0 +1,9 @@
+{
+  "status": "success",
+  "data": {
+    "tag": {
+      "id": 1502,
+      "name": "My new tag"
+    }
+  }
+}

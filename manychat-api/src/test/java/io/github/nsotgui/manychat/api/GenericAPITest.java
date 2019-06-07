@@ -16,7 +16,6 @@
 
 package io.github.nsotgui.manychat.api;
 
-import io.github.nsotgui.manychat.CustomField;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,20 +32,17 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
 public class GenericAPITest {
 
-    private ManyChatAPIClient manyChatAPIClient;
-    private MockRestServiceServer mockServer;
-
     @Rule
     public final ExpectedException exception = ExpectedException.none();
+    private ManyChatAPIClient manyChatAPIClient;
+    private MockRestServiceServer mockServer;
 
     @Before
     public void init() {

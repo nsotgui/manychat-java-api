@@ -16,6 +16,9 @@
 
 package io.github.nsotgui.manychat.api;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.nsotgui.manychat.CustomField;
 import io.github.nsotgui.manychat.Tag;
 import org.slf4j.Logger;
@@ -25,6 +28,7 @@ import org.springframework.http.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,52 +38,79 @@ import java.util.List;
  */
 final class ManyChatAPIClientImpl implements ManyChatAPIClient {
     private Logger LOG = LoggerFactory.getLogger(ManyChatAPIClientImpl.class);
-    private HttpEntity<String> entity;
+    private HttpHeaders headers;
     private RestTemplate restTemplate;
 
     public ManyChatAPIClientImpl(RestTemplate restTemplate, String apiToken) {
         this.restTemplate = restTemplate;
-        HttpHeaders headers = new HttpHeaders();
-
+        headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Authorization", "Bearer " + apiToken);
-        entity = new HttpEntity<String>("parameters", headers);
     }
 
-    public List<CustomField> getCustomFields() throws RestClientException {
-        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_CUSTOM_FIELDS;
-        LOG.info("Retrieving Custom Fields: {}", endpoint);
-        ResponseEntity<APIResponse<CustomField>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity,
-                new ParameterizedTypeReference<APIResponse<CustomField>>() {
+    @Override
+    public Tag createTag(Tag tag) throws RestClientException {
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_CREATE_TAG;
+        LOG.info("Creating tag: {} - {}", tag, endpoint);
+        HttpEntity<Tag> entity = new HttpEntity<Tag>(tag, headers);
+        ResponseEntity<APIResponse<JsonNode>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.POST, entity,
+                new ParameterizedTypeReference<APIResponse<JsonNode>>() {
                 });
         LOG.debug("Received response: {}", httpResponse.toString());
 
         processResponse(httpResponse);
 
-        APIResponse<CustomField> apiResponse = httpResponse.getBody();
-        List<CustomField> customFields = new ArrayList<>();
-        if (apiResponse != null && apiResponse.getData() != null)
-            customFields = apiResponse.getData();
-        return customFields;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        Tag createdTag = tag;
+        try {
+            APIResponse<JsonNode> apiResponse = httpResponse.getBody();
+            if (apiResponse != null && apiResponse.getData() != null)
+                createdTag = mapper.readValue(apiResponse.getData().findValue("tag").toString(), Tag.class);
+        } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+            throw new RestClientException(e.getMessage(), e);
+        }
+        return createdTag;
     }
 
     @Override
     public List<Tag> getTags() throws RestClientException {
         String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_TAGS;
         LOG.info("Retrieving Tags: {}", endpoint);
-        ResponseEntity<APIResponse<Tag>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity,
-                new ParameterizedTypeReference<APIResponse<Tag>>() {
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        ResponseEntity<APIResponse<List<Tag>>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity,
+                new ParameterizedTypeReference<APIResponse<List<Tag>>>() {
                 });
         LOG.debug("Received response: {}", httpResponse.toString());
 
         processResponse(httpResponse);
 
-        APIResponse<Tag> apiResponse = httpResponse.getBody();
+        APIResponse<List<Tag>> apiResponse = httpResponse.getBody();
         List<Tag> tags = new ArrayList<>();
         if (apiResponse != null && apiResponse.getData() != null)
             tags = apiResponse.getData();
         return tags;
+    }
+
+    public List<CustomField> getCustomFields() throws RestClientException {
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_CUSTOM_FIELDS;
+        LOG.info("Retrieving Custom Fields: {}", endpoint);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        ResponseEntity<APIResponse<List<CustomField>>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity,
+                new ParameterizedTypeReference<APIResponse<List<CustomField>>>() {
+                });
+        LOG.debug("Received response: {}", httpResponse.toString());
+
+        processResponse(httpResponse);
+
+        APIResponse<List<CustomField>> apiResponse = httpResponse.getBody();
+        List<CustomField> customFields = new ArrayList<>();
+        if (apiResponse != null && apiResponse.getData() != null)
+            customFields = apiResponse.getData();
+        return customFields;
     }
 
     private void processResponse(ResponseEntity<? extends APIResponse> httpResponse) {

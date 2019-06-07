@@ -21,6 +21,7 @@ import io.github.nsotgui.manychat.Tag;
 import io.github.nsotgui.manychat.api.ManyChatAPIClient;
 import io.github.nsotgui.manychat.api.ManyChatAPIFactory;
 import org.apache.commons.cli.*;
+import org.springframework.web.client.RestClientException;
 
 import java.util.List;
 
@@ -34,18 +35,29 @@ public class Example {
      * Runs the example
      */
     private static void runExample() {
-        // Instantiates the client
-        ManyChatAPIClient manyChatAPIClient = ManyChatAPIFactory.getManyChatAPIClient(API_KEY);
+        try {
+            // Instantiates the client
+            ManyChatAPIClient manyChatAPIClient = ManyChatAPIFactory.getManyChatAPIClient(API_KEY);
 
-        // Gets the custom fields
-        List<CustomField> customFields = manyChatAPIClient.getCustomFields();
-        for (CustomField field : customFields)
-            System.out.println("Field: " + field);
+            // Gets the custom fields
+            List<CustomField> customFields = manyChatAPIClient.getCustomFields();
+            for (CustomField field : customFields)
+                System.out.println("Field: " + field);
 
-        // Gets the tags
-        List<Tag> tags = manyChatAPIClient.getTags();
-        for (Tag tag : tags)
-            System.out.println("Tag: " + tag);
+            // Creates a tag
+            Tag tagToCreate = new Tag(-1, "My new tag");
+            Tag createdTag = manyChatAPIClient.createTag(tagToCreate);
+            System.out.println("Created tag: " + createdTag);
+
+            // Gets the tags
+            List<Tag> tags = manyChatAPIClient.getTags();
+            for (Tag tag : tags)
+                System.out.println("Tag: " + tag);
+
+        } catch (RestClientException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**

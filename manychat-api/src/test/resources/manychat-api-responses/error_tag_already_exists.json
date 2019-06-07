@@ -1,0 +1,11 @@
+{
+  "status": "error",
+  "message": "Validation error",
+  "details": {
+    "messages": [
+      {
+        "message": "Tag with specified name already exists"
+      }
+    ]
+  }
+}
