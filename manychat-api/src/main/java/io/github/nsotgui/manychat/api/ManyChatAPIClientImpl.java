@@ -41,7 +41,8 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
     }
 
     public List<CustomField> getCustomFields() {
-        ResponseEntity<CustomFieldsResponse> customFieldsResponse = restTemplate.exchange("https://api.manychat.com/fb/page/getCustomFields", HttpMethod.GET, entity, CustomFieldsResponse.class);
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_CUSTOM_FIELDS;
+        ResponseEntity<CustomFieldsResponse> customFieldsResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity, CustomFieldsResponse.class);
         return customFieldsResponse.getBody().getCustomFields();
     }
 }
