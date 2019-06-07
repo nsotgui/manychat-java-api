@@ -1,5 +1,7 @@
 # IntelliJ
 .idea
+*/build/*
+*/out/*
 
 # Gradle
 .gradle
