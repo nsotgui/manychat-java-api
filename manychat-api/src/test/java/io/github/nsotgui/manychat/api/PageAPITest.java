@@ -36,6 +36,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
@@ -177,6 +178,30 @@ public class PageAPITest {
         assertEquals("text", botFields.get(1).getType());
         assertEquals("", botFields.get(1).getDescription());
         assertEquals("My test", botFields.get(1).getValue());
+        mockServer.verify();
+    }
+
+    @Test
+    public void createBotField() throws URISyntaxException {
+        Resource resource = new InputStreamResource(this.getClass().getResourceAsStream("/manychat-api-responses/create_bot_field.json"));
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_CREATE_BOT_FIELD;
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(endpoint)))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(resource)
+                );
+
+        BotField botField = new BotField("My bot name", "text", "This field store my bot name");
+        BotField createdBotField = manyChatAPIClient.createBotField(botField);
+
+        assertEquals(507202, createdBotField.getId().intValue());
+        assertEquals(botField.getName(), createdBotField.getName());
+        assertEquals(botField.getDescription(), createdBotField.getDescription());
+        assertEquals(botField.getType(), createdBotField.getType());
+        assertNull(createdBotField.getValue());
         mockServer.verify();
     }
 }

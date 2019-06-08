@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "data": {
+    "field": {
+      "id": 507202,
+      "name": "My bot name",
+      "type": "text",
+      "description": "This field store my bot name",
+      "value": null
+    }
+  }
+}

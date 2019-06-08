@@ -32,6 +32,13 @@ public class BotField {
     public BotField() {
     }
 
+    public BotField(String name, String type, String description) {
+        this();
+        this.name = name;
+        this.type = type;
+        this.description = description;
+    }
+
     public Integer getId() {
         return id;
     }

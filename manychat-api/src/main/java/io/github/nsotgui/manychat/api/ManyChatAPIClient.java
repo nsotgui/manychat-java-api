@@ -66,4 +66,13 @@ public interface ManyChatAPIClient {
      */
     List<BotField> getBotFields() throws RestClientException;
 
+    /**
+     * Creates a bot field
+     *
+     * @param botField the bot field to create
+     * @return the bot field created
+     * @throws RestClientException
+     */
+    BotField createBotField(BotField botField) throws RestClientException;
+
 }

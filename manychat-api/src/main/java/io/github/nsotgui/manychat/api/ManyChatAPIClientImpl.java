@@ -147,6 +147,32 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
         return botFields;
     }
 
+    @Override
+    public BotField createBotField(BotField botField) throws RestClientException {
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_CREATE_BOT_FIELD;
+        LOG.info("Creating bot field: {} - {}", botField, endpoint);
+        HttpEntity<BotField> entity = new HttpEntity<BotField>(botField, headers);
+        ResponseEntity<APIResponse<JsonNode>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.POST, entity,
+                new ParameterizedTypeReference<APIResponse<JsonNode>>() {
+                });
+
+        processResponse(httpResponse);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        BotField createdBotField = botField;
+        try {
+            APIResponse<JsonNode> apiResponse = httpResponse.getBody();
+            if (apiResponse != null && apiResponse.getData() != null)
+                createdBotField = mapper.readValue(apiResponse.getData().findValue("field").toString(), BotField.class);
+        } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+            throw new RestClientException(e.getMessage(), e);
+        }
+        return createdBotField;
+    }
+
     private void processResponse(ResponseEntity<? extends APIResponse> httpResponse) {
         LOG.debug("Received response: {}", httpResponse.toString());
 

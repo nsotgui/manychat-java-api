@@ -66,6 +66,11 @@ public class Example {
             for (BotField botField : botFields)
                 System.out.println("BotField: " + botField);
 
+            // Creates a bot field
+            BotField botFieldToCreate = new BotField("My bot name", "text", "This field store my bot name");
+            BotField createdBotField = manyChatAPIClient.createBotField(botFieldToCreate);
+            System.out.println("Created bot field: " + createdBotField);
+
         } catch (RestClientException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
