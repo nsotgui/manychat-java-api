@@ -80,5 +80,8 @@ task createReleaseTag(type: Exec) {
 }
 
 task pushTag(type: Exec, dependsOn: createReleaseTag) {
-    commandLine 'git', 'push', '--tags'
+    if (System.getenv('GITHUB_API_KEY') == null || System.getenv('GITHUB_API_KEY').isEmpty())
+        commandLine 'git', 'push', '--tags'
+    else
+        commandLine 'git', 'push', "https://${System.getenv('GITHUB_API_KEY')}@github.com/nsotgui/manychat-java-api.git/", '--tags'
 }
