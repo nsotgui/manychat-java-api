@@ -13,20 +13,14 @@ before_deploy:
 
 deploy:
   - provider: script
-    script: ./gradlew pushTag
-    skip_cleanup: true
-    on:
-      branch: master
-      condition: $IS_RELEASE = true
-  - provider: script
     script: ./gradlew bintrayUpload
     skip_cleanup: true
     on:
       branch: master
-      condition: $IS_RELEASE = true
+      tags: true
   - provider: script
     script: ./gradlew githubRelease
     skip_cleanup: true
     on:
       branch: master
-      condition: $IS_RELEASE = true
+      tags: true
