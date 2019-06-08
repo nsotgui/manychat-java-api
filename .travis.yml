@@ -7,7 +7,16 @@ jdk:
 script:
   - ./gradlew clean build
 
+before_deploy:
+  - git config --local user.name "Travis CI"
+
 deploy:
+  - provider: script
+    script: ./gradlew pushTag
+    skip_cleanup: true
+    on:
+      branch: master
+      condition: $IS_RELEASE = true
   - provider: script
     script: ./gradlew bintrayUpload
     skip_cleanup: true
@@ -17,8 +26,8 @@ deploy:
   - provider: releases
     api_key: $GITHUB_API_KEY
     file:
-      - ./manychat-java-api/manychat-api-example/build/libs/manychat-api-example-*
+      - ./manychat-java-api/manychat-api/build/libs/manychat-api-*
     skip_cleanup: true
     on:
       branch: master
-      draft: true
+      condition: $IS_RELEASE = true

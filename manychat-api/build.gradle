@@ -3,10 +3,11 @@ plugins {
     id 'maven-publish'
     id "com.jfrog.bintray" version "1.8.4"
     id "com.github.spotbugs" version "2.0.0"
+    id "com.github.breadmoirai.github-release" version "2.2.9"
 }
 
 group 'io.github.nsotgui'
-version '0.0.2'
+version '0.0.3'
 
 sourceCompatibility = 1.8
 
@@ -62,4 +63,22 @@ bintray {
         githubRepo = 'nsotgui/manychat-java-api'
         githubReleaseNotesFile = 'README.md'
     }
+}
+
+githubRelease {
+    token System.getenv('GITHUB_API_KEY').toString()
+    owner 'nsotgui'
+    repo 'manychat-java-api'
+    body "Release version: v${project.version}"
+    draft true
+    releaseAssets jar, sourcesJar
+}
+
+task createReleaseTag(type: Exec) {
+    def tagName = "v${project.version}"
+    commandLine 'git', 'tag', "$tagName"
+}
+
+task pushTag(type: Exec, dependsOn: createReleaseTag) {
+    commandLine 'git', 'push', '--tags'
 }
