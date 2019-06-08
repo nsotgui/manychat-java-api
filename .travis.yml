@@ -6,3 +6,10 @@ jdk:
 
 script:
   - ./gradlew clean build
+
+deploy:
+  provider: script
+  script: ./gradlew bintrayUpload
+  on:
+    branch: master
+    condition: $IS_RELEASE = true
