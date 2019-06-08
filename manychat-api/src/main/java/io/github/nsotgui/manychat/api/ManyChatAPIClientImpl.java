@@ -19,16 +19,14 @@ package io.github.nsotgui.manychat.api;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.nsotgui.manychat.BotField;
-import io.github.nsotgui.manychat.CustomField;
-import io.github.nsotgui.manychat.Tag;
-import io.github.nsotgui.manychat.Widget;
+import io.github.nsotgui.manychat.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -202,6 +200,27 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
                 });
 
         processResponse(httpResponse);
+    }
+
+    @Override
+    public Subscriber getSubscriberInfo(String subscriberId) throws RestClientException {
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.SUBSCRIBER_GET_INFO;
+        LOG.info("Retrieving subscriber: {} - {}", subscriberId, endpoint);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(endpoint)
+                .queryParam("subscriber_id", subscriberId);
+
+        ResponseEntity<APIResponse<Subscriber>> httpResponse = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity,
+                new ParameterizedTypeReference<APIResponse<Subscriber>>() {
+                });
+
+        processResponse(httpResponse);
+
+        APIResponse<Subscriber> apiResponse = httpResponse.getBody();
+        Subscriber subscriber = null;
+        if (apiResponse != null && apiResponse.getData() != null)
+            subscriber = apiResponse.getData();
+        return subscriber;
     }
 
     private void processResponse(ResponseEntity<? extends APIResponse> httpResponse) {

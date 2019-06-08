@@ -16,10 +16,7 @@
 
 package io.github.nsotgui.manychat.api;
 
-import io.github.nsotgui.manychat.BotField;
-import io.github.nsotgui.manychat.CustomField;
-import io.github.nsotgui.manychat.Tag;
-import io.github.nsotgui.manychat.Widget;
+import io.github.nsotgui.manychat.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.InputStreamResource;
@@ -30,6 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -236,6 +234,30 @@ public class PageAPITest {
                 );
 
         manyChatAPIClient.setBotField("Bot name", "value");
+        mockServer.verify();
+    }
+
+    @Test
+    public void getSubscriberInfo() throws URISyntaxException {
+        Resource resource = new InputStreamResource(this.getClass().getResourceAsStream("/manychat-api-responses/get_subscriber_info.json"));
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.SUBSCRIBER_GET_INFO;
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(endpoint)
+                .queryParam("subscriber_id", "123456789");
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(builder.toUriString()))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(resource)
+                );
+
+        Subscriber subscriber = manyChatAPIClient.getSubscriberInfo("123456789");
+
+        assertEquals("123456789", subscriber.getId());
+        assertEquals("page123456", subscriber.getPageId());
+        assertEquals("John", subscriber.getFirstName());
+        assertEquals("Doe", subscriber.getLastName());
         mockServer.verify();
     }
 }

@@ -16,10 +16,7 @@
 
 package io.github.nsotgui.manychat.api;
 
-import io.github.nsotgui.manychat.BotField;
-import io.github.nsotgui.manychat.CustomField;
-import io.github.nsotgui.manychat.Tag;
-import io.github.nsotgui.manychat.Widget;
+import io.github.nsotgui.manychat.*;
 import org.springframework.web.client.RestClientException;
 
 import java.util.List;
@@ -92,5 +89,14 @@ public interface ManyChatAPIClient {
      * @throws RestClientException
      */
     void setBotField(String botFieldName, String value) throws RestClientException;
+
+    /**
+     * Gets subscriber info
+     *
+     * @param subscriberId the subscriber id
+     * @return the subcriber info
+     * @throws RestClientException
+     */
+    Subscriber getSubscriberInfo(String subscriberId) throws RestClientException;
 
 }

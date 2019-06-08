@@ -16,10 +16,7 @@
 
 package io.github.nsotgui;
 
-import io.github.nsotgui.manychat.BotField;
-import io.github.nsotgui.manychat.CustomField;
-import io.github.nsotgui.manychat.Tag;
-import io.github.nsotgui.manychat.Widget;
+import io.github.nsotgui.manychat.*;
 import io.github.nsotgui.manychat.api.ManyChatAPIClient;
 import io.github.nsotgui.manychat.api.ManyChatAPIFactory;
 import org.apache.commons.cli.*;
@@ -47,9 +44,9 @@ public class Example {
                 System.out.println("Field: " + field);
 
             // Creates a tag
-//            Tag tagToCreate = new Tag(-1, "My new tag");
-//            Tag createdTag = manyChatAPIClient.createTag(tagToCreate);
-//            System.out.println("Created tag: " + createdTag);
+            Tag tagToCreate = new Tag(-1, "My new tag");
+            Tag createdTag = manyChatAPIClient.createTag(tagToCreate);
+            System.out.println("Created tag: " + createdTag);
 
             // Gets the tags
             List<Tag> tags = manyChatAPIClient.getTags();
@@ -74,6 +71,10 @@ public class Example {
             List<BotField> botFields = manyChatAPIClient.getBotFields();
             for (BotField botField : botFields)
                 System.out.println("BotField: " + botField);
+
+            // Gets the subscriber info
+            Subscriber subscriber = manyChatAPIClient.getSubscriberInfo("123456789");
+            System.out.println("Subscriber: " + subscriber);
 
         } catch (RestClientException e) {
             System.err.println(e.getMessage());
