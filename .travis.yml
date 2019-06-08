@@ -24,10 +24,8 @@ deploy:
     on:
       branch: master
       condition: $IS_RELEASE = true
-  - provider: releases
-    api_key: $GITHUB_API_KEY
-    file:
-      - ./manychat-java-api/manychat-api/build/libs/manychat-api-*
+  - provider: script
+    script: ./gradlew githubRelease
     skip_cleanup: true
     on:
       branch: master
