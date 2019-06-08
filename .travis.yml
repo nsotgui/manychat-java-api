@@ -14,3 +14,11 @@ deploy:
     on:
       branch: master
       condition: $IS_RELEASE = true
+  - provider: releases
+    api_key: $GITHUB_API_KEY
+    file:
+      - ./manychat-java-api/manychat-api-example/build//libs/manychat-api-example-*.jar
+    skip_cleanup: true
+    on:
+      branch: master
+      tags: true
