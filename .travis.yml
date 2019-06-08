@@ -17,8 +17,8 @@ deploy:
   - provider: releases
     api_key: $GITHUB_API_KEY
     file:
-      - ./manychat-java-api/manychat-api-example/build//libs/manychat-api-example-*.jar
+      - ./manychat-java-api/manychat-api-example/build/libs/manychat-api-example-*
     skip_cleanup: true
     on:
       branch: master
-      tags: true
+      draft: true
