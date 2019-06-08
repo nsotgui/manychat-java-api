@@ -8,8 +8,9 @@ script:
   - ./gradlew clean build
 
 deploy:
-  provider: script
-  script: ./gradlew bintrayUpload
+  skip_cleanup: true
   on:
     branch: master
     condition: $IS_RELEASE = true
+  - provider: script
+    script: ./gradlew bintrayUpload
