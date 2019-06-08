@@ -16,6 +16,7 @@
 
 package io.github.nsotgui.manychat.api;
 
+import io.github.nsotgui.manychat.BotField;
 import io.github.nsotgui.manychat.CustomField;
 import io.github.nsotgui.manychat.Tag;
 import io.github.nsotgui.manychat.Widget;
@@ -148,6 +149,34 @@ public class PageAPITest {
         assertEquals(2, widgets.get(1).getId().intValue());
         assertEquals("Widget2", widgets.get(1).getName());
         assertEquals("landing", widgets.get(1).getType());
+        mockServer.verify();
+    }
+
+    @Test
+    public void getBotFields() throws URISyntaxException {
+        Resource resource = new InputStreamResource(this.getClass().getResourceAsStream("/manychat-api-responses/get_bot_fields.json"));
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_BOT_FIELDS;
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(endpoint)))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(resource)
+                );
+
+        List<BotField> botFields = manyChatAPIClient.getBotFields();
+        assertEquals(2, botFields.size());
+        assertEquals(1, botFields.get(0).getId().intValue());
+        assertEquals("BOT_FIELD_1", botFields.get(0).getName());
+        assertEquals("number", botFields.get(0).getType());
+        assertEquals("My Description", botFields.get(0).getDescription());
+        assertEquals("0", botFields.get(0).getValue());
+        assertEquals(2, botFields.get(1).getId().intValue());
+        assertEquals("BOT_FIELD_2", botFields.get(1).getName());
+        assertEquals("text", botFields.get(1).getType());
+        assertEquals("", botFields.get(1).getDescription());
+        assertEquals("My test", botFields.get(1).getValue());
         mockServer.verify();
     }
 }

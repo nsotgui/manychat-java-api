@@ -16,6 +16,7 @@
 
 package io.github.nsotgui.manychat.api;
 
+import io.github.nsotgui.manychat.BotField;
 import io.github.nsotgui.manychat.CustomField;
 import io.github.nsotgui.manychat.Tag;
 import io.github.nsotgui.manychat.Widget;
@@ -57,5 +58,12 @@ public interface ManyChatAPIClient {
      * @return the custom fields
      */
     List<CustomField> getCustomFields() throws RestClientException;
+
+    /**
+     * Gets the list of bot fields
+     *
+     * @return the bot fields
+     */
+    List<BotField> getBotFields() throws RestClientException;
 
 }

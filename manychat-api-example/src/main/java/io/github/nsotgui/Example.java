@@ -16,6 +16,7 @@
 
 package io.github.nsotgui;
 
+import io.github.nsotgui.manychat.BotField;
 import io.github.nsotgui.manychat.CustomField;
 import io.github.nsotgui.manychat.Tag;
 import io.github.nsotgui.manychat.Widget;
@@ -59,6 +60,11 @@ public class Example {
             List<Widget> widgets = manyChatAPIClient.getWidgets();
             for (Widget widget : widgets)
                 System.out.println("Widget: " + widget);
+
+            // Gets the bot fields
+            List<BotField> botFields = manyChatAPIClient.getBotFields();
+            for (BotField botField : botFields)
+                System.out.println("BotField: " + botField);
 
         } catch (RestClientException e) {
             System.err.println(e.getMessage());

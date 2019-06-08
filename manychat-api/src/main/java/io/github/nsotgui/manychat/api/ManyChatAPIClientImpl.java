@@ -19,6 +19,7 @@ package io.github.nsotgui.manychat.api;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.nsotgui.manychat.BotField;
 import io.github.nsotgui.manychat.CustomField;
 import io.github.nsotgui.manychat.Tag;
 import io.github.nsotgui.manychat.Widget;
@@ -127,6 +128,23 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
         if (apiResponse != null && apiResponse.getData() != null)
             customFields = apiResponse.getData();
         return customFields;
+    }
+
+    public List<BotField> getBotFields() throws RestClientException {
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_BOT_FIELDS;
+        LOG.info("Retrieving Bot Fields: {}", endpoint);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        ResponseEntity<APIResponse<List<BotField>>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity,
+                new ParameterizedTypeReference<APIResponse<List<BotField>>>() {
+                });
+
+        processResponse(httpResponse);
+
+        APIResponse<List<BotField>> apiResponse = httpResponse.getBody();
+        List<BotField> botFields = new ArrayList<>();
+        if (apiResponse != null && apiResponse.getData() != null)
+            botFields = apiResponse.getData();
+        return botFields;
     }
 
     private void processResponse(ResponseEntity<? extends APIResponse> httpResponse) {

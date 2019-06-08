@@ -1,0 +1,19 @@
+{
+  "status": "success",
+  "data": [
+    {
+      "id": 1,
+      "name": "BOT_FIELD_1",
+      "type": "number",
+      "description": "My Description",
+      "value": 0
+    },
+    {
+      "id": 2,
+      "name": "BOT_FIELD_2",
+      "type": "text",
+      "description": "",
+      "value": "My test"
+    }
+  ]
+}
