@@ -70,7 +70,6 @@ githubRelease {
     owner 'nsotgui'
     repo 'manychat-java-api'
     body "Release version: v${project.version}"
-    draft true
     releaseAssets jar, sourcesJar
 }
 
