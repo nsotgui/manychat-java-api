@@ -18,6 +18,7 @@ package io.github.nsotgui.manychat.api;
 
 import io.github.nsotgui.manychat.CustomField;
 import io.github.nsotgui.manychat.Tag;
+import io.github.nsotgui.manychat.Widget;
 import org.springframework.web.client.RestClientException;
 
 import java.util.List;
@@ -42,6 +43,13 @@ public interface ManyChatAPIClient {
      * @return the tags
      */
     List<Tag> getTags() throws RestClientException;
+
+    /**
+     * Gets the list of widgets
+     *
+     * @return the widgets
+     */
+    List<Widget> getWidgets() throws RestClientException;
 
     /**
      * Gets the list of custom fields

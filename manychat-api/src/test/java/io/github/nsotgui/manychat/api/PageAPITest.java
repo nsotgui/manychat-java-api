@@ -18,6 +18,7 @@ package io.github.nsotgui.manychat.api;
 
 import io.github.nsotgui.manychat.CustomField;
 import io.github.nsotgui.manychat.Tag;
+import io.github.nsotgui.manychat.Widget;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.InputStreamResource;
@@ -122,6 +123,31 @@ public class PageAPITest {
 
         assertEquals(tag.getName(), createdTag.getName());
         assertEquals(1502, createdTag.getId().intValue());
+        mockServer.verify();
+    }
+
+    @Test
+    public void getWidgets() throws URISyntaxException {
+        Resource resource = new InputStreamResource(this.getClass().getResourceAsStream("/manychat-api-responses/get_widgets.json"));
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_WIDGETS;
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(endpoint)))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(resource)
+                );
+
+        List<Widget> widgets = manyChatAPIClient.getWidgets();
+
+        assertEquals(2, widgets.size());
+        assertEquals(1, widgets.get(0).getId().intValue());
+        assertEquals("Widget1", widgets.get(0).getName());
+        assertEquals("customer_chat", widgets.get(0).getType());
+        assertEquals(2, widgets.get(1).getId().intValue());
+        assertEquals("Widget2", widgets.get(1).getName());
+        assertEquals("landing", widgets.get(1).getType());
         mockServer.verify();
     }
 }

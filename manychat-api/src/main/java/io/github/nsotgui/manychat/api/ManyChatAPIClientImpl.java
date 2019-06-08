@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.nsotgui.manychat.CustomField;
 import io.github.nsotgui.manychat.Tag;
+import io.github.nsotgui.manychat.Widget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -57,7 +58,6 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
         ResponseEntity<APIResponse<JsonNode>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.POST, entity,
                 new ParameterizedTypeReference<APIResponse<JsonNode>>() {
                 });
-        LOG.debug("Received response: {}", httpResponse.toString());
 
         processResponse(httpResponse);
 
@@ -84,7 +84,6 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
         ResponseEntity<APIResponse<List<Tag>>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity,
                 new ParameterizedTypeReference<APIResponse<List<Tag>>>() {
                 });
-        LOG.debug("Received response: {}", httpResponse.toString());
 
         processResponse(httpResponse);
 
@@ -95,6 +94,24 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
         return tags;
     }
 
+    @Override
+    public List<Widget> getWidgets() throws RestClientException {
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_WIDGETS;
+        LOG.info("Retrieving Widgets: {}", endpoint);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        ResponseEntity<APIResponse<List<Widget>>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity,
+                new ParameterizedTypeReference<APIResponse<List<Widget>>>() {
+                });
+
+        processResponse(httpResponse);
+
+        APIResponse<List<Widget>> apiResponse = httpResponse.getBody();
+        List<Widget> widgets = new ArrayList<>();
+        if (apiResponse != null && apiResponse.getData() != null)
+            widgets = apiResponse.getData();
+        return widgets;
+    }
+
     public List<CustomField> getCustomFields() throws RestClientException {
         String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_GET_CUSTOM_FIELDS;
         LOG.info("Retrieving Custom Fields: {}", endpoint);
@@ -102,7 +119,6 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
         ResponseEntity<APIResponse<List<CustomField>>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.GET, entity,
                 new ParameterizedTypeReference<APIResponse<List<CustomField>>>() {
                 });
-        LOG.debug("Received response: {}", httpResponse.toString());
 
         processResponse(httpResponse);
 

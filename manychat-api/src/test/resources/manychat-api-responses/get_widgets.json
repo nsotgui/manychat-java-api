@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "data": [
+    {
+      "id": 1,
+      "name": "Widget1",
+      "type": "customer_chat"
+    },
+    {
+      "id": 2,
+      "name": "Widget2",
+      "type": "landing"
+    }
+  ]
+}
