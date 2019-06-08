@@ -27,10 +27,16 @@ tasks.withType(com.github.spotbugs.SpotBugsTask) {
     reports.html.enabled = true
 }
 
+task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allJava
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            artifact sourcesJar
         }
     }
 }
