@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Internal implementation of the ManyChat api client
@@ -171,6 +172,36 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
             throw new RestClientException(e.getMessage(), e);
         }
         return createdBotField;
+    }
+
+    @Override
+    public void setBotField(Integer botFieldId, String value) throws RestClientException {
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_SET_BOT_FIELD;
+        LOG.info("Setting value: {} to bot: {} - ", value, botFieldId, endpoint);
+        Properties properties = new Properties();
+        properties.setProperty("field_id", botFieldId.toString());
+        properties.setProperty("field_value", value);
+        HttpEntity<Properties> entity = new HttpEntity<Properties>(properties, headers);
+        ResponseEntity<APIResponse<JsonNode>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.POST, entity,
+                new ParameterizedTypeReference<APIResponse<JsonNode>>() {
+                });
+
+        processResponse(httpResponse);
+    }
+
+    @Override
+    public void setBotField(String botFieldName, String value) throws RestClientException {
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_SET_BOT_FIELD_BY_NAME;
+        LOG.info("Setting value: {} to bot: {} - ", value, botFieldName, endpoint);
+        Properties properties = new Properties();
+        properties.setProperty("field_name", botFieldName);
+        properties.setProperty("field_value", value);
+        HttpEntity<Properties> entity = new HttpEntity<Properties>(properties, headers);
+        ResponseEntity<APIResponse<JsonNode>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.POST, entity,
+                new ParameterizedTypeReference<APIResponse<JsonNode>>() {
+                });
+
+        processResponse(httpResponse);
     }
 
     private void processResponse(ResponseEntity<? extends APIResponse> httpResponse) {

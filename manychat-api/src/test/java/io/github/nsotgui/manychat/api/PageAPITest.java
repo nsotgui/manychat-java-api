@@ -204,4 +204,38 @@ public class PageAPITest {
         assertNull(createdBotField.getValue());
         mockServer.verify();
     }
+
+    @Test
+    public void setBotFieldById() throws URISyntaxException {
+        Resource resource = new InputStreamResource(this.getClass().getResourceAsStream("/manychat-api-responses/success.json"));
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_SET_BOT_FIELD;
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(endpoint)))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(resource)
+                );
+
+        manyChatAPIClient.setBotField(1, "value");
+        mockServer.verify();
+    }
+
+    @Test
+    public void setBotFieldByName() throws URISyntaxException {
+        Resource resource = new InputStreamResource(this.getClass().getResourceAsStream("/manychat-api-responses/success.json"));
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_SET_BOT_FIELD_BY_NAME;
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(endpoint)))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(resource)
+                );
+
+        manyChatAPIClient.setBotField("Bot name", "value");
+        mockServer.verify();
+    }
 }

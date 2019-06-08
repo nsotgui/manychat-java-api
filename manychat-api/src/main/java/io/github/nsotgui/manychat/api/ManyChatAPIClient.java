@@ -75,4 +75,22 @@ public interface ManyChatAPIClient {
      */
     BotField createBotField(BotField botField) throws RestClientException;
 
+    /**
+     * Sets the bot field to the specified value
+     *
+     * @param botFieldId the bot field id
+     * @param value      the value
+     * @throws RestClientException
+     */
+    void setBotField(Integer botFieldId, String value) throws RestClientException;
+
+    /**
+     * Sets the bot field by name to the specified value
+     *
+     * @param botFieldName the bot field name
+     * @param value        the value
+     * @throws RestClientException
+     */
+    void setBotField(String botFieldName, String value) throws RestClientException;
+
 }

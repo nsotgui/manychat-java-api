@@ -47,9 +47,9 @@ public class Example {
                 System.out.println("Field: " + field);
 
             // Creates a tag
-            Tag tagToCreate = new Tag(-1, "My new tag");
-            Tag createdTag = manyChatAPIClient.createTag(tagToCreate);
-            System.out.println("Created tag: " + createdTag);
+//            Tag tagToCreate = new Tag(-1, "My new tag");
+//            Tag createdTag = manyChatAPIClient.createTag(tagToCreate);
+//            System.out.println("Created tag: " + createdTag);
 
             // Gets the tags
             List<Tag> tags = manyChatAPIClient.getTags();
@@ -61,15 +61,19 @@ public class Example {
             for (Widget widget : widgets)
                 System.out.println("Widget: " + widget);
 
-            // Gets the bot fields
-            List<BotField> botFields = manyChatAPIClient.getBotFields();
-            for (BotField botField : botFields)
-                System.out.println("BotField: " + botField);
-
             // Creates a bot field
             BotField botFieldToCreate = new BotField("My bot name", "text", "This field store my bot name");
             BotField createdBotField = manyChatAPIClient.createBotField(botFieldToCreate);
             System.out.println("Created bot field: " + createdBotField);
+
+            // Sets the bot field
+            manyChatAPIClient.setBotField(createdBotField.getId(), "My new value");
+            manyChatAPIClient.setBotField(createdBotField.getName(), "My new value by name");
+
+            // Gets the bot fields
+            List<BotField> botFields = manyChatAPIClient.getBotFields();
+            for (BotField botField : botFields)
+                System.out.println("BotField: " + botField);
 
         } catch (RestClientException e) {
             System.err.println(e.getMessage());
