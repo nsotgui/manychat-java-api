@@ -40,6 +40,10 @@ for (CustomField field : customFields)
     System.out.println("Field: " + field);
 ```
 
+See [_Example_](https://github.com/nsotgui/manychat-java-api/blob/master/manychat-api-example/src/main/java/io/github/nsotgui/simple/Application.java) for a simple example.
+
+See [_Spring Framework_](https://github.com/nsotgui/manychat-java-api/tree/master/manychat-api-example/src/main/java/io/github/nsotgui/spring) for an example using the Spring Framework.
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
