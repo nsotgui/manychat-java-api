@@ -4,9 +4,11 @@ This is a java implementation of the [ManyChat API](https://api.manychat.com/swa
 [![Build Status](https://travis-ci.org/nsotgui/manychat-java-api.svg?branch=master)](https://travis-ci.org/nsotgui/manychat-java-api)  ![GitHub](https://img.shields.io/github/license/nsotgui/manychat-java-api.svg) ![Bintray](https://img.shields.io/bintray/v/nsotgui/manychat-java-api/manychat-api.svg?color=green&label=version)
 
 
-# Table of Contents  
-[How to use the library](#How_to_use_the_library)<br>
-[License](#License)<br>
+## Table of Contents  
+[Setup](##Setup)<br>
+[Usage](##Usage)<br>
+[Contributing](##Contributing)<br>
+[License](##License)<br>
 
 ## Setup
 
