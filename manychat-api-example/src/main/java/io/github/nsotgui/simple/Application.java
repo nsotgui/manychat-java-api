@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.nsotgui;
+package io.github.nsotgui.simple;
 
 import io.github.nsotgui.manychat.*;
 import io.github.nsotgui.manychat.api.ManyChatAPIClient;
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Simple example on how to use the library
  */
-public class Example {
+public class Application {
     private static String API_KEY = "";
 
     /**

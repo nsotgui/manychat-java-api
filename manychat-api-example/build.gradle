@@ -10,7 +10,10 @@ sourceCompatibility = 1.8
 
 dependencies {
     compile project(":manychat-api")
+    // Simple example dependencies
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    // Spring example dependencies
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.1.5.RELEASE'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

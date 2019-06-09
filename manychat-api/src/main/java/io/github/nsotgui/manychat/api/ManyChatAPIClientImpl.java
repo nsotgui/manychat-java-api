@@ -175,7 +175,7 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
     @Override
     public void setBotField(Integer botFieldId, String value) throws RestClientException {
         String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_SET_BOT_FIELD;
-        LOG.info("Setting value: {} to bot: {} - ", value, botFieldId, endpoint);
+        LOG.info("Setting value: {} to bot: {} - {}", value, botFieldId, endpoint);
         Properties properties = new Properties();
         properties.setProperty("field_id", botFieldId.toString());
         properties.setProperty("field_value", value);
@@ -190,7 +190,7 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
     @Override
     public void setBotField(String botFieldName, String value) throws RestClientException {
         String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.PAGE_SET_BOT_FIELD_BY_NAME;
-        LOG.info("Setting value: {} to bot: {} - ", value, botFieldName, endpoint);
+        LOG.info("Setting value: {} to bot: {} - {}", value, botFieldName, endpoint);
         Properties properties = new Properties();
         properties.setProperty("field_name", botFieldName);
         properties.setProperty("field_value", value);
