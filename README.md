@@ -1,7 +1,7 @@
 # ManyChat Java API 
 This is a java implementation of the [ManyChat API](https://api.manychat.com/swagger#/).
 
-[![Build Status](https://travis-ci.org/nsotgui/manychat-java-api.svg?branch=master)](https://travis-ci.org/nsotgui/manychat-java-api)  ![GitHub](https://img.shields.io/github/license/nsotgui/manychat-java-api.svg) ![Bintray](https://img.shields.io/bintray/v/nsotgui/manychat-java-api/manychat-api.svg?color=green&label=version)
+[![Build Status](https://travis-ci.org/nsotgui/manychat-java-api.svg?branch=master)](https://travis-ci.org/nsotgui/manychat-java-api)  ![GitHub](https://img.shields.io/github/license/nsotgui/manychat-java-api.svg?color=brightgreen) ![Bintray](https://img.shields.io/bintray/v/nsotgui/manychat-java-api/manychat-api.svg?color=brightgreen&label=version)
 
 
 ## Table of Contents  
