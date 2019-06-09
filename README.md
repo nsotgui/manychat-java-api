@@ -5,10 +5,10 @@ This is a java implementation of the [ManyChat API](https://api.manychat.com/swa
 
 
 ## Table of Contents  
-[Setup](##Setup)<br>
-[Usage](##Usage)<br>
-[Contributing](##Contributing)<br>
-[License](##License)<br>
+[Setup](#Setup)<br>
+[Usage](#Usage)<br>
+[Contributing](#Contributing)<br>
+[License](#License)<br>
 
 ## Setup
 
