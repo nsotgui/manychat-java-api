@@ -18,9 +18,7 @@ _build.gradle_:
 ```groovy
 ...
 repositories {
-    maven {
-      url 'https://dl.bintray.com/nsotgui/manychat-java-api/'
-    }
+    jcenter()
 }
 ...
 dependencies {
