@@ -27,6 +27,7 @@ public class CustomField {
     private String name;
     private String type;
     private String description;
+    private String value;
 
     public CustomField() {
     }
@@ -70,6 +71,14 @@ public class CustomField {
         this.description = description;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     @Override
     public String toString() {
         return "CustomField{" +
@@ -77,6 +86,7 @@ public class CustomField {
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
+                ", value='" + value + '\'' +
                 '}';
     }
 }

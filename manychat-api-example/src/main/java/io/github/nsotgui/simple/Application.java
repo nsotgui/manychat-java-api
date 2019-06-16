@@ -76,6 +76,13 @@ public class Application {
             Subscriber subscriber = manyChatAPIClient.getSubscriberInfo("123456789");
             System.out.println("Subscriber: " + subscriber);
 
+            // Creates a custom field
+            CustomField customFieldToCreate = new CustomField();
+            customFieldToCreate.setId(customFields.get(0).getId()); // This assumes that your customFields.get(0) exists
+            customFieldToCreate.setValue("My value");
+            manyChatAPIClient.setCustomField(subscriber.getId(), customFieldToCreate);
+            System.out.println("Created custom field: " + customFieldToCreate);
+
         } catch (RestClientException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();

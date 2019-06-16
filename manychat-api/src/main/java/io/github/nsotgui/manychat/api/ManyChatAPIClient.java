@@ -99,4 +99,13 @@ public interface ManyChatAPIClient {
      */
     Subscriber getSubscriberInfo(String subscriberId) throws RestClientException;
 
+    /**
+     * Sets the custom field for the specified subscriber
+     *
+     * @param subscriberId the subscriber id
+     * @param customField  the custom field with the value to set
+     * @throws RestClientException
+     */
+    void setCustomField(String subscriberId, CustomField customField) throws RestClientException;
+
 }

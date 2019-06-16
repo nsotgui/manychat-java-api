@@ -223,6 +223,22 @@ final class ManyChatAPIClientImpl implements ManyChatAPIClient {
         return subscriber;
     }
 
+    @Override
+    public void setCustomField(String subscriberId, CustomField customField) throws RestClientException {
+        String endpoint = ManyChatAPIEndpoints.BASE_URL + ManyChatAPIEndpoints.SUBSCRIBER_SET_CUSTOM_FIELD;
+        LOG.info("Setting custom field: {} to user: {} - {}", customField.getId(), subscriberId, endpoint);
+        Properties properties = new Properties();
+        properties.setProperty("subscriber_id", subscriberId);
+        properties.setProperty("field_id", customField.getId().toString());
+        properties.setProperty("field_value", customField.getValue());
+        HttpEntity<Properties> entity = new HttpEntity<Properties>(properties, headers);
+        ResponseEntity<APIResponse<JsonNode>> httpResponse = restTemplate.exchange(endpoint, HttpMethod.POST, entity,
+                new ParameterizedTypeReference<APIResponse<JsonNode>>() {
+                });
+
+        processResponse(httpResponse);
+    }
+
     private void processResponse(ResponseEntity<? extends APIResponse> httpResponse) {
         LOG.debug("Received response: {}", httpResponse.toString());
 
